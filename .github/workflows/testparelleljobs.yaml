@@ -1,23 +1,31 @@
-name: 12 - Bash Single Job
+name: 12 - Bash Parallel Jobs
 on:
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
-  learn-basics:
+  job-one:
+    name: Job 1 - System Information
     runs-on: ubuntu-latest
     steps:
-      - name: Step 1 - Print a message
-        run: echo "Hello from my first GitHub Actions job"
-      - name: Step 2 - Show runner information
-        run: |
-          echo "Operating system: $RUNNER_OS"
-          echo "Runner architecture: $RUNNER_ARCH"
-          echo "Workspace: $GITHUB_WORKSPACE"
-      - name: Step 3 - Run several Bash commands
-        run: |
-          current_time=$(date -u)
-          echo "Current UTC time: $current_time"
-          echo "All steps in this job run in order."
-
-
+      - run: |
+          echo "Job one started"
+          uname -a
+          echo "Job one completed"
+  job-two:
+    name: Job 2 - Date Information
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Job two started"
+          date -u
+          echo "Job two completed"
+  job-three:
+    name: Job 3 - Disk Information
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "Job three started"
+          df -h
+          echo "Job three completed"
+# Because these jobs do not use "needs", GitHub can run them in parallel.
