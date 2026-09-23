@@ -1,4 +1,4 @@
-name: 14 - Bash Variables and Conditions
+name: 14 - Bash Variables and Conditions
 run-name: Greet ${{ inputs.person }} from ${{ inputs.environment }}
 
 on:
