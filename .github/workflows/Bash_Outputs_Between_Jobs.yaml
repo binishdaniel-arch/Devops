@@ -1,0 +1,29 @@
+name: 15 - Bash Outputs Between Jobs
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  producer:
+    runs-on: ubuntu-latest
+    outputs:
+      message: ${{ steps.create-message.outputs.message }}
+      build_number: ${{ steps.create-message.outputs.build_number }}
+    steps:
+      - name: Create step outputs
+        id: create-message
+        run: |
+          echo "message=Hello from the producer job" >> "$GITHUB_OUTPUT"
+          echo "build_number=${GITHUB_RUN_NUMBER}" >> "$GITHUB_OUTPUT"
+
+  consumer:
+    needs: producer
+    runs-on: ubuntu-latest
+    steps:
+      - name: Read outputs from the producer job
+        run: |
+          echo "Message: ${{ needs.producer.outputs.message }}"
+          echo "Build number: ${{ needs.producer.outputs.build_number }}"
